@@ -3,6 +3,8 @@
  */
 package org.pjay.codes;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
@@ -10,5 +12,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
  *
  */
 public interface CountryCodesRepository extends JpaRepository<Country, Integer> {
+
+	List<Country> findByIso2CountryCode(String iso2CountryCode);
 
 }
