@@ -9,6 +9,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @author vijayk
  *
  */
-public interface ExternalCodesRepository extends JpaRepository<Integer, Country> {
+public interface CountryCodesRepository extends JpaRepository<Country, Integer> {
 
 }
