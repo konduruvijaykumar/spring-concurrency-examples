@@ -31,7 +31,9 @@ public class ExternalCodesServiceController {
 	CountryCodesRepository countryCodesRepository;
 
 	@GetMapping("/country/{iso2countrycode}")
-	public ResponseEntity<Country> getCountryName(@PathVariable("iso2countrycode") String iso2countrycode) {
+	public ResponseEntity<Country> getCountryName(@PathVariable("iso2countrycode") String iso2countrycode)
+			throws InterruptedException {
+		Thread.sleep(4000);
 		List<Country> findByIso2CountryCode = countryCodesRepository.findByIso2CountryCode(iso2countrycode);
 		if (null != findByIso2CountryCode && !findByIso2CountryCode.isEmpty()) {
 			return new ResponseEntity<>(findByIso2CountryCode.get(0), HttpStatus.OK);
@@ -45,7 +47,13 @@ public class ExternalCodesServiceController {
 	}
 
 	@GetMapping("/phone/{iso2countrycode}")
-	public ResponseEntity<Phone> getPhoneCode(@PathVariable("iso2countrycode") String iso2countrycode) {
+	public ResponseEntity<Phone> getPhoneCode(@PathVariable("iso2countrycode") String iso2countrycode)
+			throws InterruptedException {
+		if (random.nextBoolean()) {
+			Thread.sleep(6000);
+		} else {
+			Thread.sleep(3000);
+		}
 		List<Phone> findByIso2CountryCode = phoneCodesRepository.findByIso2CountryCode(iso2countrycode);
 		if (null != findByIso2CountryCode && !findByIso2CountryCode.isEmpty()) {
 			return new ResponseEntity<>(findByIso2CountryCode.get(0), HttpStatus.OK);
