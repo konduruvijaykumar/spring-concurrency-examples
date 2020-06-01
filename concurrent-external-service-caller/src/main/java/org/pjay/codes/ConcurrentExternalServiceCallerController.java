@@ -49,9 +49,39 @@ public class ConcurrentExternalServiceCallerController {
 				e.printStackTrace();
 			}
 		}
+		
 		long end = System.currentTimeMillis();
 		System.out.println("Time taken by getCountries() method :: " + (end - start)/1000 + " secs");
 		return new ResponseEntity<>(countries, HttpStatus.OK);
+	}
+	
+	// @GetMapping("/phones")
+	// @PostMapping("/phones")
+	@RequestMapping(value = "/phones", method = { RequestMethod.GET, RequestMethod.POST })
+	public ResponseEntity<List<Phone>> getPhones(@RequestBody String[] iso2countrycodes){
+		long start = System.currentTimeMillis();
+		List<CompletableFuture<Phone>> allPhoneFuture = new ArrayList<>();
+		List<Phone> phones = new ArrayList<>();
+		
+		for (String iso2countrycode : iso2countrycodes) {
+			allPhoneFuture.add(concurrentExternalService.callExternalPhoneService(iso2countrycode));
+		}
+		
+		CompletableFuture.allOf(allPhoneFuture.toArray(new CompletableFuture[0]));
+		
+		for (CompletableFuture<Phone> phoneFuture : allPhoneFuture) {
+			try {
+				phones.add(phoneFuture.get());
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			} catch (ExecutionException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		long end = System.currentTimeMillis();
+		System.out.println("Time taken by getPhones() method :: " + (end - start)/1000 + " secs");
+		return new ResponseEntity<>(phones, HttpStatus.OK);
 	}
 
 }
