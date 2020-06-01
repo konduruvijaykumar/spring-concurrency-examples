@@ -22,7 +22,7 @@ public class ConcurrentExternalService {
 	@Autowired
 	RestTemplate restTemplate;
 
-	final String EXTERNAL_SERVICE_URL = "http://localhost:8080";
+	final String EXTERNAL_SERVICE_URL = "http://localhost:8181";
 
 	@Async
 	public CompletableFuture<Country> callExternalCountryService(String iso2countrycode) {
